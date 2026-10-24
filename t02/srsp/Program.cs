@@ -4,12 +4,18 @@ class Program
 {
     static void Main()
     {
-        Console.WriteLine("Введите целое неотрицательное число n:");
+        Console.Write("Введите целое неотрицательное число n: ");
         string input = Console.ReadLine();
 
-        if (!int.TryParse(input, out int n) || n < 0)
+        if (!int.TryParse(input, out int n))
         {
-            Console.WriteLine("Ошибка: некорректный ввод. Требуется целое число >= 0.");
+            Console.WriteLine("Ошибка: введено не целое число!");
+            return;
+        }
+
+        if (n < 0)
+        {
+            Console.WriteLine("Ошибка: число должно быть неотрицательным (n >= 0).");
             return;
         }
 
@@ -23,17 +29,16 @@ class Program
         }
         else
         {
-            int temp = n;
-            while (temp > 0)
+            while (n > 0)
             {
-                int digit = temp % 10;
+                int digit = n % 10;
                 sum += digit;
                 count++;
-                temp /= 10;
+                n /= 10;
             }
         }
 
-        Console.WriteLine($"Количество цифр: {count}");
-        Console.WriteLine($"Сумма цифр: {sum}");
+        Console.WriteLine($"Количество цифр (count): {count}");
+        Console.WriteLine($"Сумма цифр (sum): {sum}");
     }
 }
