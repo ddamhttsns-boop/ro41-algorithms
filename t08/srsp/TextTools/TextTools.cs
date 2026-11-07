@@ -3,115 +3,72 @@ using System.Text;
 
 public static class TextTools
 {
-    public static int CountWords(string s)
+    public static int CountWords(string text)
     {
-        if (s == null) return 0;
-        int len = s.Length;
-        if (len == 0) return 0;
-
-        int words = 0;
-        bool inside = false;
-
-        for (int i = 0; i < len; i++)
+        if (string.IsNullOrEmpty(text)) return 0;
+        int counter = 0, state = 0;
+        for (int k = 0; k < text.Length; k++)
         {
-            char c = s[i];
-            if (c == ' ' || c == '\t' || c == '\n' || c == '\r')
+            if (char.IsWhiteSpace(text[k]))
             {
-                inside = false;
+                state = 0;
             }
-            else
+            else if (state == 0)
             {
-                if (!inside)
-                {
-                    words++;
-                    inside = true;
-                }
+                state = 1;
+                counter++;
             }
         }
-        return words;
+        return counter;
     }
 
-    public static bool IsPalindrome(string s)
+    public static bool IsPalindrome(string text)
     {
-        if (string.IsNullOrEmpty(s)) return true;
-
-        int l = 0;
-        int r = s.Length - 1;
-
-        while (l < r)
+        if (string.IsNullOrEmpty(text)) return true;
+        int a = 0, b = text.Length - 1;
+        while (a < b)
         {
-            char cl = s[l];
-            char cr = s[r];
-
-            if (char.IsWhiteSpace(cl))
-            {
-                l++;
-                continue;
-            }
-            if (char.IsWhiteSpace(cr))
-            {
-                r--;
-                continue;
-            }
-
-            if (char.ToLower(cl) != char.ToLower(cr))
-            {
-                return false;
-            }
-
-            l++;
-            r--;
+            while (a < b && char.IsWhiteSpace(text[a])) a++;
+            while (a < b && char.IsWhiteSpace(text[b])) b--;
+            if (char.ToLower(text[a]) != char.ToLower(text[b])) return false;
+            a++;
+            b--;
         }
         return true;
     }
 
-    public static string Initials(string fullName)
+    public static string Initials(string name)
     {
-        if (string.IsNullOrWhiteSpace(fullName)) return string.Empty;
-
-        StringBuilder result = new StringBuilder();
-        bool startNewWord = true;
-
-        for (int i = 0; i < fullName.Length; i++)
+        if (string.IsNullOrWhiteSpace(name)) return string.Empty;
+        StringBuilder sb = new StringBuilder();
+        bool flag = true;
+        for (int i = 0; i < name.Length; i++)
         {
-            char c = fullName[i];
-            if (char.IsWhiteSpace(c))
+            if (char.IsWhiteSpace(name[i]))
             {
-                startNewWord = true;
+                flag = true;
             }
-            else
+            else if (flag)
             {
-                if (startNewWord)
-                {
-                    if (result.Length > 0)
-                    {
-                        result.Append(". ");
-                    }
-                    result.Append(char.ToUpper(c));
-                    startNewWord = false;
-                }
+                if (sb.Length > 0) sb.Append(". ");
+                sb.Append(char.ToUpper(name[i]));
+                flag = false;
             }
         }
-
-        if (result.Length > 0)
-        {
-            result.Append(".");
-        }
-
-        return result.ToString();
+        if (sb.Length > 0) sb.Append(".");
+        return sb.ToString();
     }
 
-    public static string Repeat(string s, int n)
+    public static string Repeat(string source, int times)
     {
-        if (string.IsNullOrEmpty(s) || n <= 0) return string.Empty;
-
-        StringBuilder sb = new StringBuilder(s.Length * n);
-        int counter = 0;
-        while (counter < n)
+        if (string.IsNullOrEmpty(source) || times <= 0) return string.Empty;
+        StringBuilder builder = new StringBuilder();
+        int index = 0;
+        while (index < times)
         {
-            sb.Append(s);
-            counter++;
+            builder.Append(source);
+            index++;
         }
-        return sb.ToString();
+        return builder.ToString();
     }
 }
